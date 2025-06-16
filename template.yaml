@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  alarynt-telemetry
+
+  A lightweight Lambda for collecting and reporting usage metrics for the Alarynt serverless rule engine.
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  TelemetryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: alarynt-telemetry-collector
+      Handler: src/handlers/telemetry-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Environment:
+        Variables:
+          TENANT_ID: "your-tenant-id"
+          CONTROL_PLANE_URL: "https://api.alarynt.com/telemetry"
+          ENVIRONMENT: "production"
+          VERSION: "0.1.0"
+          AUTH_SECRET: "your-auth-secret"
+          IAM_ROLE: ""
+      Events:
+        ScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: "rate(1 hour)"
+
+Outputs:
+  TelemetryFunction:
+    Description: "Alarynt Telemetry Collector Lambda Function ARN"
+    Value: !GetAtt TelemetryFunction.Arn
+  TelemetryFunctionIamRole:
+    Description: "Implicit IAM Role created for Telemetry function"
+    Value: !GetAtt TelemetryFunctionRole.Arn 

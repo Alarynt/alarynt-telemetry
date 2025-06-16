@@ -1,0 +1,12 @@
+{
+  "name": "alarynt-telemetry",
+  "version": "0.1.0",
+  "description": "A lightweight Lambda for collecting and reporting usage metrics for the Alarynt serverless rule engine.",
+  "main": "src/handlers/telemetry-handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alarynt",
+  "license": "ISC",
+  "dependencies": {}
+} 
